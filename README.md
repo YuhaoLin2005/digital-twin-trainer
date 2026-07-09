@@ -1,40 +1,28 @@
 # Digital Twin Trainer
 
-Train a meta-cognitive model from your own AI interaction data. Not RAG. Not prompts. **Internalization** — thinking patterns compiled into model weights.
+**Train meta-cognition into model weights.** Not RAG. Not prompts. Internalization.
 
-[DEV.to Article](https://dev.to/yuhaolin2005/meta-cognition-is-the-future-of-ai-personalization-5fki) | [4-Quadrant Model](memory/four-quadrant-overview.md)
+[Technical Report](paper/paper.md) | [DEV.to](https://dev.to/yuhaolin2005/meta-cognition-is-the-future-of-ai-personalization-a-4-quadrant-framework-to-build-it-5fki) | [Juejin](https://juejin.cn/spost/7660395581106782234)
+
+## Research Pipeline (for evaluators)
+
+| Stage | Paper | GitHub | Article |
+|-------|-------|--------|---------|
+| Cognitive Architecture | Sec 2 | .claude/ SOUL/BODY/INTERFACE | [DEV.to](https://dev.to/yuhaolin2005/i-built-a-self-referential-ai-system-then-anthropic-discovered-the-same-architecture-in-claude-3m73) |
+| J-space Replication | Sec 3 | Hermes Workspace | [Juejin](https://juejin.cn/post/7659251094817341490) |
+| Quality Gates | Sec 4 | training-gate, behavioral_drift | [DEV.to](https://dev.to/yuhaolin2005/my-loss-went-down-but-my-model-still-broke-so-i-built-a-drift-metric-e8f) |
+| Digital Twin Training | Sec 5 | digital-twin-trainer | [DEV.to](https://dev.to/yuhaolin2005/meta-cognition-is-the-future-of-ai-personalization-a-4-quadrant-framework-to-build-it-5fki) |
+| Evaluation | Sec 6 | eval_metacognition.py | [Juejin](https://juejin.cn/spost/7660395581106782234) |
 
 ## Quick Start
 
-```bash
 pip install transformers peft bitsandbytes datasets accelerate
-python phase2_data_prep.py --dry-run    # Preview data
-python phase2_data_prep.py              # Generate training data
-python phase3_lora_train.py             # Train (5 min, 6GB VRAM)
-python phase4_sft_loop.py --rounds 3    # Expert-guided refinement
-```
+python phase2_data_prep.py
+python phase3_lora_train.py        # 5 min, 6GB VRAM
 
-## Architecture
+## Key Finding
 
-```
-.claude/ -> Sanitize -> Instruction Pairs -> QLoRA -> Digital Twin v1
-                                                    |
-                          Expert Pool <- Judge <- v1 |
-                                                    v
-                          v1 vs Base -> SFT -> v2 -> loop
-```
-
-| Phase | File | Description |
-|-------|------|-------------|
-| 1 | `phase1_merge.py` | MergeKit model fusion |
-| 2 | `phase2_data_prep.py` | Config -> training data |
-| 3 | `phase3_lora_train.py` | QLoRA personality injection |
-| 4 | `phase4_sft_loop.py` | Expert-guided SFT refinement |
-
-## Requirements
-
-- Python 3.10+ | NVIDIA GPU 6GB+ VRAM
-- Qwen2.5-1.5B-Instruct | 4-bit quantization
+Meta-cognition transfers across untrained domains when distilled from cognitive architecture. RAG beats knowledge internalization but cannot change thinking patterns. Three-layer architecture: RAG (WHAT) + QLoRA (HOW) + Foundation.
 
 ## License
 
