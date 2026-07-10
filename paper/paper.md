@@ -1,3 +1,31 @@
+# 阅读指南
+
+> **技术报告草稿，全文约4000字（英文）。如果您时间有限：**
+
+| 时间 | 章节 | 重点 |
+|------|------|------|
+| 2分钟 | 下方中文摘要 + Sec 1 | 核心问题和完整脉络 |
+| 5分钟 | + Sec 5-6 | 实验设计和量化结果 |
+| 10分钟 | + Repository Map表 | 论文-仓库-文章对应关系 |
+
+---
+
+## 中文摘要
+
+**问题：** AI在长会话中会忘记系统指令（身份漂移）。RAG和提示词只是外部拐杖，模型本身没变。
+
+**方法：** 分两步 —
+1. **外部约束（Part 1）：** 设计文件系统层规则架构，用30组对照实验验证（Fisher检验 p=0.0092）。
+2. **权重内化（Part 2）：** QLoRA微调Qwen2.5-1.5B（RTX3060 6G，253条数据），10个未训练领域跨域测试。
+
+**关键数据：** n=30 p=0.0092 · 253条数据 5分钟训练 · 10领域ROUGE-L差异90.5%
+
+**社区验证：** ECC 22.6万★合并 · claude-skills 2.1万★共同作者 · Anthropic官方正向评价
+
+**局限：** 1.5B小模型 · 自动评分有局限 · 全参数SFT对比未完成（6GB限制）
+
+---
+
 # Behavioral Pattern Transfer via QLoRA: From External Scaffolding to Weight-Internalized Agent Constraints
 
 **Yuhao Lin** — Fujian Agriculture and Forestry University, Spatial Information & Digital Technology
