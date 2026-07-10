@@ -27,7 +27,7 @@
 | Causal Validation | Sec 3 | hermes-workspace (EXPERIMENT.md) | [Juejin](https://juejin.cn/post/7659251094817341490) |
 | Quality Gates | Sec 4 | training-gate | [DEV.to](https://dev.to/yuhaolin2005/my-loss-went-down-but-my-model-still-broke-so-i-built-a-drift-metric-e8f) |
 | Weight Internalization (Part 2) | Sec 5-6 | digital-twin-trainer | [DEV.to](https://dev.to/yuhaolin2005/meta-cognition-is-the-future-of-ai-personalization-a-4-quadrant-framework-to-build-it-5fki) |
-| Evaluation | Sec 6 | eval_metacognition.py, run_baseline.py | [Juejin](https://juejin.cn/spost/7660395581106782234) |
+| Evaluation | Sec 6 | eval_metacognition.py, run_baseline.py | — |
 
 ## 1. Introduction
 
