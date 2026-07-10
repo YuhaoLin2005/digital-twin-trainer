@@ -1,31 +1,3 @@
-# 阅读指南
-
-> **技术报告草稿，全文约4000字（英文）。如果您时间有限：**
-
-| 时间 | 章节 | 重点 |
-|------|------|------|
-| 2分钟 | 下方中文摘要 + Sec 1 | 核心问题和完整脉络 |
-| 5分钟 | + Sec 5-6 | 实验设计和量化结果 |
-| 10分钟 | + Repository Map表 | 论文-仓库-文章对应关系 |
-
----
-
-## 中文摘要
-
-**问题：** AI在长会话中会忘记系统指令（身份漂移）。RAG和提示词只是外部拐杖，模型本身没变。
-
-**方法：** 分两步 —
-1. **外部约束（Part 1）：** 设计文件系统层规则架构，用30组对照实验验证（Fisher检验 p=0.0092）。
-2. **权重内化（Part 2）：** QLoRA微调Qwen2.5-1.5B（RTX3060 6G，253条数据），10个未训练领域跨域测试。
-
-**关键数据：** n=30 p=0.0092 · 253条数据 5分钟训练 · 10领域ROUGE-L差异90.5%
-
-**社区验证：** ECC 22.6万★合并 · claude-skills 2.1万★共同作者 · Anthropic官方正向评价
-
-**局限：** 1.5B小模型 · 自动评分有局限 · 全参数SFT对比未完成（6GB限制）
-
----
-
 # Behavioral Pattern Transfer via QLoRA: From External Scaffolding to Weight-Internalized Agent Constraints
 
 **Yuhao Lin** — Fujian Agriculture and Forestry University, Spatial Information & Digital Technology
@@ -49,11 +21,11 @@ We investigate whether agent behavioral constraints, first validated as external
 
 ## 1. Introduction
 
-Part 1 (hermes-workspace) demonstrated that external file-system scaffolding (SOUL/BODY/INTERFACE) causally alters model behavior (n=30, Fisher exact p=0.0092) and received community validation through ECC (200K+ stars) and HuggingFace mergers. However, external scaffolding must be reloaded each session. Part 2 asks: can the same behavioral patterns be internalized into model weights?
+Part 1 (hermes-workspace) demonstrated that external file-system scaffolding (SOUL/BODY/INTERFACE) causally alters model behavior (n=30, Fisher exact p=0.0092; 2x2 contingency: 11/4 vs 3/12, OR=11.0, 95%CI [2.0,60.6]) and received community validation through ECC (228k stars, PRs #2377+#2378 merged) and claude-skills (21.9k stars, PR #867 merged). However, external scaffolding must be reloaded each session. Part 2 asks: can the same behavioral patterns be internalized into model weights?
 
 ## 2-4. Background: External Scaffolding (see Part 1 for details)
 
-Hermes Workspace: file-system cognitive architecture. J-space: p=0.0092 causal validation. Quality gates: training-gate, behavioral_drift HF PR #778 (pending review), ECC delivery-gate hook.
+Hermes Workspace: file-system cognitive architecture. J-space: p=0.0092 causal validation (2x2 contingency table in EXPERIMENT.md). Quality gates: training-gate, ECC delivery-gate hook (merged #2377+#2378), behavioral_drift (HF evaluate PR #778, open).
 
 ## 5. Behavioral Pattern Transfer via QLoRA
 
@@ -61,13 +33,17 @@ Hermes Workspace: file-system cognitive architecture. J-space: p=0.0092 causal v
 
 ## 6. Cross-Domain Evaluation
 
-10 untrained domains. Qualitative: structured decomposition transfers. Quantitative: structural metrics comparable (100% vs 100% decomposition, 80% vs 70% verification). Uncertainty declaration lower in fine-tuned model (10% vs 40%).
+10 untrained domains: Med, Law, Finance, Psych, Edu, Agri, Fit, Music, Astro, Mgmt — spanning STEM, social sciences, and practical domains.
+
+**ROUGE-L (Twin vs Raw Qwen):** Mean recall 0.095 (range: 0.0 Astro to 0.157 Music). Low overlap indicates behavioral divergence from base model. Per-domain: Med 0.111, Law 0.134, Finance 0.110, Psych 0.122, Edu 0.120, Agri 0.093, Fit 0.016, Music 0.157, Astro 0.000, Mgmt 0.086.
+
+**Structural metrics:** Structured decomposition present in both (100% vs 100%). Verification comparable (80% vs 70%). Uncertainty declaration lower in fine-tuned model (10% vs 40%) — twin is more confident, which may reflect internalized patterns or overconfidence.
 
 **Limitations (explicit):**
 1. n=10 domains with single responses per test — pilot study scale
 2. Regex-based automated scoring cannot capture semantic quality
 3. No baseline comparison with standard SFT (pending)
-4. No ROUGE-L/BLEU quantitative metrics (pending)
+4. ROUGE-L metrics added (mean 0.095); BLEU/BERTScore pending
 5. 1.5B parameter model may have insufficient capacity
 6. **We have NOT validated whether observed patterns constitute human-equivalent meta-cognition.** They represent behavioral pattern transfer at proof-of-concept level.
 7. Single temperature setting (t=0.7)
@@ -82,13 +58,13 @@ Layer 1: RAG (WHAT, daily). Layer 2: QLoRA Behavioral Patterns (HOW, monthly). L
 
 ## 9. Future Work & Required Baselines
 
-- Baseline A: Raw Qwen2.5-1.5B (done)
-- Baseline B: External prompt only, no fine-tuning (pending)
+- Baseline A: Raw Qwen2.5-1.5B + ROUGE-L comparison (done, mean recall 0.095)
+- Baseline B: External prompt only, no fine-tuning (done, mean recall 0.107)
 - Baseline C: Standard SFT comparison (pending)
 - Scale to 7B-70B models
-- LLM-as-judge evaluation replacing regex
+- LLM-as-judge evaluation replacing regex scoring
 - Human-subject studies
-- ROUGE-L/BLEU quantitative metrics
+- Semantic evaluation beyond ROUGE-L (BLEU, BERTScore)
 
 ## References
 
