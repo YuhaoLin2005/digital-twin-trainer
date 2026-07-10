@@ -1,3 +1,42 @@
+# 给张凯斌老师的阅读指南
+
+> **这是一份技术报告草稿，全文约4000字（英文）。如果您时间有限，建议阅读路径：**
+
+| 阅读时间 | 看什么 | 重点 |
+|---------|--------|------|
+| **2分钟** | 下方中文摘要 + §1 Introduction | 了解核心问题和完整脉络 |
+| **5分钟** | + §5 Digital Twin Training + §6 Evaluation | 实验设计和量化结果 |
+| **10分钟** | + Repository & Article Map（§1的表格） | 论文-仓库-文章对应关系 |
+
+---
+
+## 中文摘要
+
+**问题：** AI在长会话中会"忘记"系统指令（身份漂移），现有的RAG和系统提示词只是外部拐杖，模型本身没变。
+
+**方法：** 分两步走 —
+1. **外部约束（Part 1）：** 设计了一套文件系统层面的规则架构（SOUL/BODY/INTERFACE），让AI的行为被机械规则约束。用30组对照实验（Fisher精确检验，p=0.0092）验证了这套规则确实能因果性地改变AI行为。
+2. **权重内化（Part 2）：** 既然外部规则有效，能不能不每次加载，而是直接训练进模型？用QLoRA对Qwen2.5-1.5B模型微调（RTX 3060笔记本GPU，253条真实会话数据），在10个完全未训练的领域测试了行为模式的跨域迁移效果。
+
+**关键数据：**
+- 对照实验：n=30, p=0.0092（统计显著）
+- 微调：253条数据，4-bit QLoRA，5分钟训练
+- 10领域跨域测试：ROUGE-L与基座模型差异90.5%（表明行为发生了显著改变）
+- 基线对比：Raw Qwen vs Qwen+外部提示 vs QLoRA Twin
+
+**社区验证：**
+- ECC项目（22.6万Star）：delivery-gate + growth-log 被合并
+- claude-skills（2.1万Star）：self-audit 共同作者
+- Anthropic官方Skills仓库：收到工程师正向评价
+
+**局限（诚实声明）：**
+- 1.5B小模型，尚未在7B+模型验证
+- 正则表达式自动评分有局限，未做人工评估
+- 全参数SFT对比实验因6GB显存限制未能完成
+- 未验证观察到的行为模式是否等同于人类"元认知"
+
+---
+
 # Behavioral Pattern Transfer via QLoRA: From External Scaffolding to Weight-Internalized Agent Constraints
 
 **Yuhao Lin** — Fujian Agriculture and Forestry University, Spatial Information & Digital Technology
