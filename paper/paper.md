@@ -25,7 +25,7 @@ Part 1 (hermes-workspace) demonstrated that external file-system scaffolding (SO
 
 ## 2-4. Background: External Scaffolding (see Part 1 for details)
 
-Hermes Workspace: file-system cognitive architecture. J-space: p=0.0092 causal validation. Quality gates: training-gate, behavioral_drift HF PR #778, ECC delivery-gate hook.
+Hermes Workspace: file-system cognitive architecture. J-space: p=0.0092 causal validation. Quality gates: training-gate, behavioral_drift HF PR #778 (pending review), ECC delivery-gate hook.
 
 ## 5. Behavioral Pattern Transfer via QLoRA
 
